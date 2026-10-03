@@ -1,0 +1,34 @@
+# Render Blueprint: infrastructure as code. Render → New → Blueprint → pick this repo.
+# Secrets marked `sync: false` are prompted for in the dashboard and never stored in git.
+services:
+  - type: web
+    name: estimator-agent-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free              # sleeps after 15 min idle (~1 min cold start); "starter" stays warm
+    region: singapore       # closest Render region to Visakhapatnam
+    healthCheckPath: /health/ready
+    autoDeploy: true        # redeploy on every push to the default branch
+    envVars:
+      - key: APP_ENV
+        value: production   # disables /docs; use "staging" if you want Swagger online
+      - key: LOG_JSON
+        value: "true"
+      - key: CHECKPOINTER
+        value: mongodb      # required on Render: memory is wiped on every sleep/redeploy
+      - key: CORS_ORIGINS
+        value: '["http://localhost:3000"]'   # replace with your Vercel URL(s)
+      - key: GOOGLE_API_KEY
+        sync: false
+      - key: MONGODB_URI
+        sync: false         # Atlas SRV string: mongodb+srv://user:pass@cluster.xxx.mongodb.net/
+      - key: MONGODB_DB
+        value: estimator
+      - key: ADMIN_API_KEY
+        generateValue: true # Render generates a random secret; copy it from the dashboard
+      - key: OWNER_EMAIL
+        sync: false
+      - key: OWNER_WHATSAPP
+        sync: false
+      - key: EMAIL_PROVIDER
+        value: console      # switch to "resend" + RESEND_API_KEY to send real emails

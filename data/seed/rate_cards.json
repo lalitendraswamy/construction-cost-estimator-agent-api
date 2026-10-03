@@ -1,0 +1,35 @@
+[
+  {
+    "city": "visakhapatnam",
+    "tier": "basic",
+    "base_rate_per_sqft": 2000,
+    "band_min_per_sqft": 1700,
+    "band_max_per_sqft": 2400,
+    "shares": {"cement": 0.16, "steel": 0.24, "sand": 0.05, "aggregate": 0.04, "bricks": 0.07, "labour": 0.24, "finishing": 0.10, "electrical": 0.05, "plumbing": 0.05},
+    "extras_inr": {"lift": 700000, "solar": 200000, "sump": 120000, "cellar_parking": 1200000, "compound_wall": 250000},
+    "contingency_pct": 0.05,
+    "source": "placeholder"
+  },
+  {
+    "city": "visakhapatnam",
+    "tier": "standard",
+    "base_rate_per_sqft": 2600,
+    "band_min_per_sqft": 2200,
+    "band_max_per_sqft": 3100,
+    "shares": {"cement": 0.16, "steel": 0.24, "sand": 0.05, "aggregate": 0.04, "bricks": 0.07, "labour": 0.22, "finishing": 0.12, "electrical": 0.05, "plumbing": 0.05},
+    "extras_inr": {"lift": 850000, "solar": 250000, "sump": 150000, "cellar_parking": 1500000, "compound_wall": 300000},
+    "contingency_pct": 0.07,
+    "source": "placeholder"
+  },
+  {
+    "city": "visakhapatnam",
+    "tier": "premium",
+    "base_rate_per_sqft": 3600,
+    "band_min_per_sqft": 3000,
+    "band_max_per_sqft": 4500,
+    "shares": {"cement": 0.13, "steel": 0.20, "sand": 0.04, "aggregate": 0.03, "bricks": 0.06, "labour": 0.20, "finishing": 0.22, "electrical": 0.06, "plumbing": 0.06},
+    "extras_inr": {"lift": 1200000, "solar": 350000, "sump": 200000, "cellar_parking": 2000000, "compound_wall": 400000},
+    "contingency_pct": 0.08,
+    "source": "placeholder"
+  }
+]
