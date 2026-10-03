@@ -56,6 +56,10 @@ async def default_container(settings: Settings) -> AsyncIterator[Container]:
     export_provider_env(settings)
     client = mongo.create_client(settings)
     db = mongo.get_database(client, settings)
+    # Warm the connection pool: the first Atlas round-trip (SRV DNS + TLS + auth) takes
+    # seconds; doing it here keeps readiness probes and the first user request fast.
+    if not await mongo.ping(db, timeout_s=15):
+        log.warning("mongodb_unreachable_at_startup", hint="check MONGODB_URI / Atlas Network Access")
     models = LangChainModelRegistry(settings)
     # Fail fast: a missing API key or a typo in LLM_*_MODEL should stop startup with a clear
     # error, not surface later as a 500 on the first chat message.

@@ -50,7 +50,7 @@ class Settings(BaseSettings):
     embeddings_dimensions: int = 768  # must match the Atlas vector index
 
     # MongoDB
-    mongodb_uri: str = "mongodb://localhost:27017/?directConnection=true"
+    mongodb_uri: str = ""  # Atlas SRV string; required at runtime (see db/mongo.require_uri)
     mongodb_db: str = "estimator"
     vector_index_name: str = "kb_vector_index"
 

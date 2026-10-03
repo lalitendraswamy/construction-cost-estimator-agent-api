@@ -1,28 +1,11 @@
-# Local stack: API + MongoDB Atlas Local (supports $vectorSearch, so RAG works offline).
+# Runs the API in the same Docker image Render uses, against MongoDB Atlas from .env.
+# Useful to reproduce production behaviour locally: `make up` / `make down`.
 services:
-  mongodb:
-    image: mongodb/mongodb-atlas-local:8.0
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo-data:/data/db
-    healthcheck:
-      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
-      interval: 10s
-      retries: 10
-
   api:
     build: .
     env_file: .env
     environment:
-      MONGODB_URI: mongodb://mongodb:27017/?directConnection=true
       APP_ENV: local
       LOG_JSON: "false"
     ports:
       - "8000:8000"
-    depends_on:
-      mongodb:
-        condition: service_healthy
-
-volumes:
-  mongo-data:

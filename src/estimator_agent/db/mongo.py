@@ -20,9 +20,20 @@ CHECKPOINTS = "checkpoints"
 CHECKPOINT_WRITES = "checkpoint_writes"
 
 
+def require_uri(settings: Settings) -> str:
+    """Fail fast with a clear message instead of a 30 s server-selection timeout."""
+    if not settings.mongodb_uri:
+        raise RuntimeError(
+            "MONGODB_URI is not set. Put your Atlas connection string "
+            "(mongodb+srv://USER:PASSWORD@CLUSTER.xxxxx.mongodb.net/) in .env or the "
+            "Render environment."
+        )
+    return settings.mongodb_uri
+
+
 def create_client(settings: Settings) -> AsyncMongoClient[dict[str, Any]]:
     return AsyncMongoClient(
-        settings.mongodb_uri,
+        require_uri(settings),
         appname=settings.app_name,
         serverSelectionTimeoutMS=5_000,
         tz_aware=True,

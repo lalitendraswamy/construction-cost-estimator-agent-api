@@ -31,7 +31,7 @@ def build_serializer() -> JsonPlusSerializer:
 async def checkpointer_from_settings(settings: Settings) -> AsyncIterator[BaseCheckpointSaver[Any]]:
     serde = build_serializer()
     if settings.checkpointer == "mongodb":
-        client: MongoClient[dict[str, Any]] = MongoClient(settings.mongodb_uri)
+        client: MongoClient[dict[str, Any]] = MongoClient(mongo.require_uri(settings))
         try:
             yield MongoDBSaver(  # sync driver; async methods run in a thread pool
                 client,

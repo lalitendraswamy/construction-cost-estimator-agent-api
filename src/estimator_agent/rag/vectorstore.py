@@ -20,7 +20,7 @@ from estimator_agent.db import mongo
 def build_vector_store(
     settings: Settings, embeddings: Embeddings, client: MongoClient[dict[str, Any]] | None = None
 ) -> MongoDBAtlasVectorSearch:
-    client = client or MongoClient(settings.mongodb_uri, appname=f"{settings.app_name}-rag")
+    client = client or MongoClient(mongo.require_uri(settings), appname=f"{settings.app_name}-rag")
     collection = client[settings.mongodb_db][mongo.KB_CHUNKS]
     return MongoDBAtlasVectorSearch(
         collection=collection,

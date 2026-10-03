@@ -12,12 +12,16 @@ and hands the lead to the owner with human-in-the-loop confirmation.
 ```bash
 python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
 make install                                           # pip install -e ".[dev]" + pre-commit
-cp .env.example .env                                   # add GOOGLE_API_KEY (free: aistudio.google.com/apikey)
+cp .env.example .env                                   # add GOOGLE_API_KEY + MONGODB_URI (Atlas)
 
-docker compose up -d mongodb                           # MongoDB Atlas Local (vector search included)
-make indexes seed ingest                               # indexes, placeholder rates, knowledge base
+make indexes seed ingest                               # one-time: indexes, placeholder rates, knowledge base
+make check-db                                          # should print "verdict   : READY"
 make dev                                               # http://localhost:8000/docs
 ```
+
+**One database for everything:** local development and the Render deployment share the same
+MongoDB Atlas database (`MONGODB_DB=estimator`). Use recognisable thread IDs locally
+(e.g. `dev-…`) so test conversations are easy to spot.
 
 Try it:
 
@@ -38,7 +42,8 @@ curl -N -X POST localhost:8000/api/v1/chat -H "content-type: application/json" \
 | `make lint` / `make format` / `make typecheck` | ruff, ruff format, mypy --strict |
 | `make graph` | export the LangGraph diagram to `docs/graph.mmd` |
 | `make evals` | LangSmith routing eval (real keys, real tokens) |
-| `make up` | full stack in Docker |
+| `make check-db` | show which MongoDB is configured and whether it is set up |
+| `make up` / `make down` | run the API in the production Docker image (against Atlas) |
 
 ## API (`/api/v1`)
 
